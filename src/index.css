@@ -1,0 +1,15 @@
+body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  background-color: #37393F;
+  font-family: "DM Sans", sans-serif;
+  color: white;
+}
+#root{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100svh;
+}

@@ -1,0 +1,19 @@
+.btn {
+  border-radius: 10px;
+  padding-block: 9px;
+  padding-inline: 10px;
+  outline: none;
+  border: none;
+  font-weight: bold;
+  font-family: "DM Sans", sans-serif;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.primary {
+  background-color: #7c36d6;
+}
+.info {
+  background-color: #45474e;
+}

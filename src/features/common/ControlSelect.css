@@ -1,0 +1,17 @@
+.control__select {
+  background-color: #37393f;
+}
+.control__select > select {
+  background-color: #37393f;
+  outline: none;
+  border: none;
+  color: white;
+  font-family: "DM Sans", sans-serif;
+  box-sizing: border-box;
+  font-size: 12px;
+}
+.control__select > select > option {
+  font-family: "DM Sans", sans-serif;
+  box-sizing: border-box;
+  
+}
