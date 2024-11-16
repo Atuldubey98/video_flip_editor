@@ -6,12 +6,16 @@ export default function ErrorPreview({
 }: {
   statusError: PreviewErrorStatus;
 }) {
-  const message = croperErrortStatusMessages.get(statusError);
+  const messageSplits = (
+    croperErrortStatusMessages.get(statusError) || ""
+  )?.split("\n");
   return (
     <div className="error__preview">
       <img src="/play.svg" />
       <p>Preview not available</p>
-      <p className="error__previewMessage">{message}</p>
+      {messageSplits.map((message: string) => (
+        <p className="error__previewMessage">{message}</p>
+      ))}
     </div>
   );
 }

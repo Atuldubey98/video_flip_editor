@@ -9,7 +9,6 @@ type CanvasPreviewProps = {
   previewStatus: PreviewErrorStatus;
 };
 export default function CanvasPreview(props: CanvasPreviewProps) {
-  console.log(props.previewStatus);
   
   return (
     <div className="canvas__preview">

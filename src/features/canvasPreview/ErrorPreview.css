@@ -4,8 +4,9 @@
   justify-content: center;
   flex-direction: column;
 }
-.error__preview > p {
+.error__preview p {
   margin-block: 0.3rem;
+  font-size: 12px;
 }
 
 .error__previewMessage {

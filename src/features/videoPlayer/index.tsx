@@ -52,7 +52,7 @@ export default function VideoPlayer({
       >
         <ReactPlayer
           url={"/video.mp4"}
-          controls={false}
+          controls
           style={{
             objectFit: "contain",
             borderRadius: 20,
@@ -60,6 +60,7 @@ export default function VideoPlayer({
           }}
           {...dimensionVideoPlayer}
           onReady={onReady}
+          volume={videoPlayerState.volume}
           playbackRate={videoPlayerState.playbackRate}
           onPlay={onPlay}
           onEnded={onEndAnimationFrame}

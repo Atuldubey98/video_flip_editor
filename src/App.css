@@ -4,6 +4,9 @@ main {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
+.video__playerWrapper{
+  padding-top: 4rem;
+}
 footer {
   display: flex;
   align-items: center;

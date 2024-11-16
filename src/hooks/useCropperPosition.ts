@@ -3,6 +3,7 @@ import { dimensionVideoPlayer } from "../constants";
 
 type CropperPositionProps = {
   cropperWidth: number;
+
 };
 
 export default function useCropperPosition({
@@ -14,10 +15,8 @@ export default function useCropperPosition({
     const maxCropX = dimensionVideoPlayer.width - cropperWidth;
     setCropX(Math.max(0, Math.min(newCropX, maxCropX)));
   };
-  const sx = dimensionVideoPlayer.width - (cropX + cropperWidth);
   return {
     handleCropDrag,
     cropX,
-    sx,
   };
 }

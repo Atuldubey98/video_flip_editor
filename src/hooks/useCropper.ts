@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { CropperChunk, CropperStatus } from "../types";
 import { OnProgressProps } from "react-player/base";
+import { State } from "./useVideoPlayer";
 
 type CropperHookProps = {
-  playbackRate: number;
+  videoPlayerState: State;
+  coordinates: number[];
 };
 
-export default function useCropper({ playbackRate }: CropperHookProps) {
+export default function useCropper({ videoPlayerState }: CropperHookProps) {
+  const { playbackRate, volume } = videoPlayerState;
   const [status, setStatus] = useState(CropperStatus.IDLE);
   const [cropperChunks, setCropperChunks] = useState<CropperChunk[]>([]);
 
@@ -17,9 +20,9 @@ export default function useCropper({ playbackRate }: CropperHookProps) {
     setCropperChunks([
       ...cropperChunks,
       {
-        playbackRate,
         timeStamp: playerProgress.playedSeconds,
-        volume: 1,
+        playbackRate,
+        volume,
       },
     ]);
   };

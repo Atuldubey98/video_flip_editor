@@ -17,13 +17,15 @@ export default function App() {
   const cropperPosition = useCropperPosition({ cropperWidth });
 
   const { onAddChunkToCropperGenerator, ...cropper } = useCropper({
-    playbackRate: videoPlayer.state.playbackRate,
+    videoPlayerState: videoPlayer.state,
+    coordinates: [cropperPosition.cropX, cropperWidth],
   });
   const { canvasRef, previewStatus, ...videoPlayerControls } =
     useCroppedPreview({
       cropperWidth,
       cropX: cropperPosition.cropX,
       cropperStatus: cropper.status,
+      videoPlayerDispatch: videoPlayer.dispatch,
     });
   const playerProps = {
     cropperStatus: cropper.status,
@@ -44,7 +46,7 @@ export default function App() {
         </div>
       </header>
       <main>
-        <div>
+        <div className="video__playerWrapper">
           <VideoPlayer {...playerProps} />
         </div>
         <div>
