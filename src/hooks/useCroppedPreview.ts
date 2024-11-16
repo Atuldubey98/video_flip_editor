@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-import { dimensionVideoPlayer } from "../constants";
 import { CropperStatus, PreviewErrorStatus } from "../types";
+import { getCanvasDrawParams } from "../utils";
 
 interface CroppedPreviewProps {
   cropperWidth: number;
@@ -40,20 +40,14 @@ export default function useCroppedPreview({
     if (!context.current) context.current = canvasRef.current.getContext("2d");
     clearCanvas();
     setPreviewStatus(PreviewErrorStatus.PREVIEWING);
-
     const video = videoElementRef.current;
     const canvas = canvasRef.current;
-
-    const scale = video.videoWidth / dimensionVideoPlayer.width;
-
-    const sx = cropX * scale;
-    const sy = 0;
-    const sWidth = cropperWidth * scale;
-    const sHeight = video.videoHeight;
-
-    const dWidth = cropperWidth;
-    const dHeight = canvas.height;
-
+    const { sx, sy, sWidth, sHeight, dWidth, dHeight } = getCanvasDrawParams(
+      video,
+      canvas,
+      cropX,
+      cropperWidth
+    );
     context.current?.drawImage(
       video,
       sx,
@@ -69,11 +63,8 @@ export default function useCroppedPreview({
     animationFrame.current = requestAnimationFrame(onPlayVideoPlayerPaint);
   };
 
-  const onEndAnimationFrame = () => {
-    if (animationFrame.current) {
-      cancelAnimationFrame(animationFrame.current);
-    }
-  };
+  const onEndAnimationFrame = () =>
+    animationFrame.current && cancelAnimationFrame(animationFrame.current);
 
   const clearCanvas = () => {
     if (!canvasRef.current || !context.current) return;

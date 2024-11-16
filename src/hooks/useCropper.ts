@@ -2,7 +2,11 @@ import { useState } from "react";
 import { CropperChunk, CropperStatus } from "../types";
 import { OnProgressProps } from "react-player/base";
 
-export default function useCropper({ playbackRate }: { playbackRate: number }) {
+type CropperHookProps = {
+  playbackRate: number;
+};
+
+export default function useCropper({ playbackRate }: CropperHookProps) {
   const [status, setStatus] = useState(CropperStatus.IDLE);
   const [cropperChunks, setCropperChunks] = useState<CropperChunk[]>([]);
 

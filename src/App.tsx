@@ -1,5 +1,5 @@
 import "./App.css";
-import { getCropperWidth } from "./constants";
+
 import CroppingOperations from "./features/croppingOperations";
 import CanvasPreview from "./features/canvasPreview";
 import VideoPlayer from "./features/videoPlayer";
@@ -9,6 +9,7 @@ import {
   useCropperPosition,
   useVideoPlayer,
 } from "./hooks";
+import { getCropperWidth } from "./utils";
 
 export default function App() {
   const videoPlayer = useVideoPlayer();

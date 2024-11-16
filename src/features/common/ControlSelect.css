@@ -23,4 +23,5 @@
 .control__select > select > option {
   font-family: "DM Sans", sans-serif;
   box-sizing: border-box;
+  cursor: pointer;
 }

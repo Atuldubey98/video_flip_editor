@@ -18,10 +18,6 @@ export const dimensionVideoPlayer = {
   width: 650,
   height: 365,
 };
-export const getCropperWidth = (ratio: string) => {
-  const [height, width] = ratio.split(":");
-  return dimensionVideoPlayer.height * (Number(height) / Number(width));
-};
 
 export const croperErrortStatusMessages: Map<PreviewErrorStatus, string> =
   new Map([
@@ -33,3 +29,4 @@ export const croperErrortStatusMessages: Map<PreviewErrorStatus, string> =
     [PreviewErrorStatus.VIDEO_ERROR, "Some error in video"],
     [PreviewErrorStatus.PREVIEWING, ""],
   ]);
+

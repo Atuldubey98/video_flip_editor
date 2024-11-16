@@ -1,5 +1,5 @@
 import React from "react";
-import { getCropperWidth } from "../../constants";
+import { getCropperWidth } from "../../utils";
 
 interface CropperProps {
   cropX: number;

@@ -6,16 +6,7 @@ import Cropper from "./Cropper";
 import "./VideoPlayer.css";
 import { OnProgressProps } from "react-player/base";
 import { CropperStatus } from "../../types";
-export default function VideoPlayer({
-  videoPlayer,
-  cropperPosition,
-  cropperStatus,
-  onReadyVideoPlayer,
-  onPlayVideoPlayerPaint,
-  onEndAnimationFrame,
-  onAddChunkToCropperGenerator,
-  clearCanvas,
-}: {
+type VideoPlayerProps = {
   videoPlayer: {
     state: State;
     dispatch: React.Dispatch<Action>;
@@ -30,7 +21,18 @@ export default function VideoPlayer({
   onEndAnimationFrame: () => void;
   clearCanvas: () => void;
   onAddChunkToCropperGenerator: (videoPlayerProgress: OnProgressProps) => void;
-}) {
+};
+
+export default function VideoPlayer({
+  videoPlayer,
+  cropperPosition,
+  cropperStatus,
+  onReadyVideoPlayer,
+  onPlayVideoPlayerPaint,
+  onEndAnimationFrame,
+  onAddChunkToCropperGenerator,
+  clearCanvas,
+}: VideoPlayerProps) {
   const { state: videoPlayerState } = videoPlayer;
 
   const onReady = (player: ReactPlayer): void =>
@@ -53,6 +55,7 @@ export default function VideoPlayer({
           controls
           style={{
             objectFit: "contain",
+            borderRadius: 20,
             ...dimensionVideoPlayer,
           }}
           {...dimensionVideoPlayer}
