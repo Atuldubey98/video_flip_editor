@@ -1,3 +1,5 @@
+import { PreviewErrorStatus } from "./types";
+
 export const playBackRateOptions = [
   { value: 0.5, label: "Playback Speed 0.5x" },
   { value: 1, label: "Playback Speed 1x" },
@@ -20,3 +22,18 @@ export const getCropperWidth = (ratio: string) => {
   const [height, width] = ratio.split(":");
   return dimensionVideoPlayer.height * (Number(height) / Number(width));
 };
+
+export const croperErrortStatusMessages: Map<PreviewErrorStatus, string> =
+  new Map([
+    [PreviewErrorStatus.CANVAS_ERROR, "Some error occured in canvas"],
+    [
+      PreviewErrorStatus.CROPPER_REMOVED,
+      "Please click on “Start Cropper” \n and then play video",
+    ],
+    [PreviewErrorStatus.VIDEO_ERROR, "Some error in video"],
+    [
+      PreviewErrorStatus.VIDEO_PAUSED,
+      "Please click on “Start Cropper” \n and then play video",
+    ],
+    [PreviewErrorStatus.PREVIEWING, ""],
+  ]);

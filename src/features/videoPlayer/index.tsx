@@ -4,15 +4,17 @@ import { Action, State } from "../../hooks/useVideoPlayer";
 import Controls from "./Controls";
 import Cropper from "./Cropper";
 import "./VideoPlayer.css";
-import { CropperChunk } from "../../types";
+import { OnProgressProps } from "react-player/base";
+import { CropperStatus } from "../../types";
 export default function VideoPlayer({
   videoPlayer,
   cropperPosition,
+  cropperStatus,
   onReadyVideoPlayer,
   onPlayVideoPlayerPaint,
   onEndAnimationFrame,
-  clearCanvas,
   onAddChunkToCropperGenerator,
+  clearCanvas,
 }: {
   videoPlayer: {
     state: State;
@@ -22,14 +24,22 @@ export default function VideoPlayer({
     handleCropDrag: (newCropX: number) => void;
     cropX: number;
   };
+  cropperStatus: CropperStatus;
   onReadyVideoPlayer: (video: HTMLVideoElement) => void;
   onPlayVideoPlayerPaint: () => void;
   onEndAnimationFrame: () => void;
   clearCanvas: () => void;
-  onAddChunkToCropperGenerator: (chunk: CropperChunk) => void;
+  onAddChunkToCropperGenerator: (videoPlayerProgress: OnProgressProps) => void;
 }) {
   const { state: videoPlayerState } = videoPlayer;
 
+  const onReady = (player: ReactPlayer): void =>
+    onReadyVideoPlayer(player.getInternalPlayer() as HTMLVideoElement);
+
+  const onPlay = () => {
+    clearCanvas();
+    onPlayVideoPlayerPaint();
+  };
   return (
     <div className="video__player">
       <div
@@ -39,36 +49,27 @@ export default function VideoPlayer({
         className="video__playerContainer"
       >
         <ReactPlayer
-          url={"/1080.mp4"}
+          url={"/video.mp4"}
           controls
           style={{
             objectFit: "contain",
             ...dimensionVideoPlayer,
           }}
           {...dimensionVideoPlayer}
-          onReady={(player) =>
-            onReadyVideoPlayer(player.getInternalPlayer() as HTMLVideoElement)
-          }
+          onReady={onReady}
           playbackRate={videoPlayerState.playbackRate}
-          onPlay={() => {
-            clearCanvas();
-            onPlayVideoPlayerPaint();
-          }}
+          onPlay={onPlay}
           onEnded={onEndAnimationFrame}
-          onProgress={(progress) => {
-            onAddChunkToCropperGenerator({
-              playbackRate: videoPlayer.state.playbackRate,
-              timeStamp: progress.playedSeconds,
-              volume: 1,
-            });
-          }}
+          onProgress={onAddChunkToCropperGenerator}
         />
 
-        <Cropper
-          aspectRatio={videoPlayerState.aspectRatio}
-          cropX={cropperPosition.cropX}
-          onDrag={cropperPosition.handleCropDrag}
-        />
+        {cropperStatus === CropperStatus.CROPPING ? (
+          <Cropper
+            aspectRatio={videoPlayerState.aspectRatio}
+            cropX={cropperPosition.cropX}
+            onDrag={cropperPosition.handleCropDrag}
+          />
+        ) : null}
       </div>
       <Controls
         videoPlayer={videoPlayer}
