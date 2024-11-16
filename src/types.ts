@@ -8,6 +8,7 @@ export type CropperChunk = {
   timeStamp: number;
   volume: number;
   playbackRate: number;
+  coordinates: number[];
 };
 
 export enum PreviewErrorStatus {

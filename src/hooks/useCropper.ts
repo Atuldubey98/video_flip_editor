@@ -8,7 +8,10 @@ type CropperHookProps = {
   coordinates: number[];
 };
 
-export default function useCropper({ videoPlayerState }: CropperHookProps) {
+export default function useCropper({
+  videoPlayerState,
+  coordinates,
+}: CropperHookProps) {
   const { playbackRate, volume } = videoPlayerState;
   const [status, setStatus] = useState(CropperStatus.IDLE);
   const [cropperChunks, setCropperChunks] = useState<CropperChunk[]>([]);
@@ -23,6 +26,7 @@ export default function useCropper({ videoPlayerState }: CropperHookProps) {
         timeStamp: playerProgress.playedSeconds,
         playbackRate,
         volume,
+        coordinates,
       },
     ]);
   };
