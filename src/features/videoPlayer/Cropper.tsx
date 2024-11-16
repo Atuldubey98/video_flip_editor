@@ -37,6 +37,7 @@ export default function Cropper({ cropX, onDrag, aspectRatio }: CropperProps) {
         gridTemplateColumns: "repeat(3, 1fr)",
         gridTemplateRows: "repeat(3, 1fr)",
         width: cropperWidth,
+        border: "1px solid #ccc",
         height: "100%",
         cursor: "grab",
       }}
@@ -48,9 +49,14 @@ export default function Cropper({ cropX, onDrag, aspectRatio }: CropperProps) {
           <div
             key={index}
             style={{
-              border: "0.5px solid #ccc",
-              borderRadius: "5px",
-              backgroundColor: "rgba(255, 255, 255, 0.1)",
+              borderBottomStyle: [0, 1, 2, 3, 4, 5].includes(index)
+                ? "dotted"
+                : undefined,
+              borderRightStyle: [0, 1, 3, 4, 6, 7].includes(index)
+                ? "dotted"
+                : undefined,
+              borderWidth: 1,
+              borderColor: "#ccc",
             }}
           />
         ))}

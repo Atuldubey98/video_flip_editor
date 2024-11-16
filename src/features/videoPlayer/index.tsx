@@ -52,7 +52,7 @@ export default function VideoPlayer({
       >
         <ReactPlayer
           url={"/video.mp4"}
-          controls
+          controls={false}
           style={{
             objectFit: "contain",
             borderRadius: 20,
