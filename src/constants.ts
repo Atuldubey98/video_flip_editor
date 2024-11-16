@@ -31,9 +31,5 @@ export const croperErrortStatusMessages: Map<PreviewErrorStatus, string> =
       "Please click on “Start Cropper” \n and then play video",
     ],
     [PreviewErrorStatus.VIDEO_ERROR, "Some error in video"],
-    [
-      PreviewErrorStatus.VIDEO_PAUSED,
-      "Please click on “Start Cropper” \n and then play video",
-    ],
     [PreviewErrorStatus.PREVIEWING, ""],
   ]);

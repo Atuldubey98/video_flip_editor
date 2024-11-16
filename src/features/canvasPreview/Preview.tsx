@@ -16,7 +16,6 @@ const Preview = forwardRef<HTMLCanvasElement, PreviewProps>(
         : { width: 0, height: 0 };
     return (
       <div className="preview">
-        <h3>Preview</h3>
         <canvas ref={canvasRef || ref} {...canvasDimentions} />
       </div>
     );

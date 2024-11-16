@@ -17,7 +17,7 @@ export default function useCroppedPreview({
   const context = useRef<CanvasRenderingContext2D | null>(null);
   const videoElementRef = useRef<HTMLVideoElement | null>(null);
   const [previewStatus, setPreviewStatus] = useState(
-    PreviewErrorStatus.VIDEO_PAUSED
+    PreviewErrorStatus.CROPPER_REMOVED
   );
   const onReadyVideoPlayer = (video: HTMLVideoElement) =>
     (videoElementRef.current = video);
@@ -30,10 +30,6 @@ export default function useCroppedPreview({
     }
     if (!videoElementRef.current) {
       setPreviewStatus(PreviewErrorStatus.VIDEO_ERROR);
-      return;
-    }
-    if (videoElementRef.current.paused) {
-      setPreviewStatus(PreviewErrorStatus.VIDEO_PAUSED);
       return;
     }
     if ([CropperStatus.IDLE, CropperStatus.REMOVED].includes(cropperStatus)) {

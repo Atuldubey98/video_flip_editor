@@ -1,6 +1,6 @@
 import { croperErrortStatusMessages } from "../../constants";
 import { PreviewErrorStatus } from "../../types";
-import './ErrorPreview.css';
+import "./ErrorPreview.css";
 export default function ErrorPreview({
   statusError,
 }: {
@@ -11,7 +11,7 @@ export default function ErrorPreview({
     <div className="error__preview">
       <img src="/play.svg" />
       <p>Preview not available</p>
-      <p>{message}</p>
+      <p className="error__previewMessage">{message}</p>
     </div>
   );
 }

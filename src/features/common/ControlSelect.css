@@ -1,9 +1,19 @@
 .control__select {
   background-color: #37393f;
+  border: 1px solid rgb(69, 71, 78);
+  padding-block: 7px;
+  padding-inline: 10px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 .control__select > select {
   background-color: #37393f;
   outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.8rem;
+  cursor: pointer;
   border: none;
   color: white;
   font-family: "DM Sans", sans-serif;
@@ -13,5 +23,4 @@
 .control__select > select > option {
   font-family: "DM Sans", sans-serif;
   box-sizing: border-box;
-  
 }

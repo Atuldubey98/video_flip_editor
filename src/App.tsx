@@ -1,14 +1,14 @@
 import "./App.css";
 import { getCropperWidth } from "./constants";
 import CroppingOperations from "./features/croppingOperations";
-import Preview from "./features/preview";
-import ErrorPreview from "./features/preview/ErrorPreview";
+import CanvasPreview from "./features/canvasPreview";
 import VideoPlayer from "./features/videoPlayer";
-import useCroppedPreview from "./hooks/useCroppedPreview";
-import useCropper from "./hooks/useCropper";
-import useCropperPosition from "./hooks/useCropperPosition";
-import useVideoPlayer from "./hooks/useVideoPlayer";
-import { PreviewErrorStatus } from "./types";
+import {
+  useCroppedPreview,
+  useCropper,
+  useCropperPosition,
+  useVideoPlayer,
+} from "./hooks";
 
 export default function App() {
   const videoPlayer = useVideoPlayer();
@@ -31,6 +31,10 @@ export default function App() {
     cropperPosition,
     ...videoPlayerControls,
   };
+  const canvasProps = {
+    canvasRef,
+    previewStatus,
+  };
   return (
     <>
       <header>
@@ -43,10 +47,7 @@ export default function App() {
           <VideoPlayer {...playerProps} />
         </div>
         <div>
-          <Preview canvasRef={canvasRef} previewStatus={previewStatus} />
-          {previewStatus === PreviewErrorStatus.PREVIEWING ? null : (
-            <ErrorPreview statusError={previewStatus} />
-          )}
+          <CanvasPreview {...canvasProps} />
         </div>
       </main>
       <footer>

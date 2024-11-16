@@ -13,7 +13,6 @@ export type CropperChunk = {
 export enum PreviewErrorStatus {
   CANVAS_ERROR = "canvas_error",
   VIDEO_ERROR = "video_error",
-  VIDEO_PAUSED = "video_paused",
   CROPPER_REMOVED = "cropper_removed",
   PREVIEWING = "previewing",
 }

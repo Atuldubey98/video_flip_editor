@@ -10,6 +10,7 @@ footer {
   justify-content: space-between;
   gap: 10px;
   width: 100%;
+  border-top: 1px solid rgb(69, 71, 78);
 }
 header {
   width: 100%;

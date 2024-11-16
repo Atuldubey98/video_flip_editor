@@ -2,7 +2,7 @@ import React from "react";
 import { playBackRateOptions, aspectRatioOptions } from "../../constants";
 import { Action, ActionType, State } from "../../hooks/useVideoPlayer";
 import ControlSelect from "../common/ControlSelect";
-
+import './Controls.css';
 export default function Controls({
   videoPlayer,
   handleCropDrag,
@@ -17,7 +17,7 @@ export default function Controls({
     videoPlayer;
 
   return (
-    <div className="video__playerControls">
+    <div className="controls">
       <ControlSelect
         name="playbackRate"
         onChange={(e) => {
