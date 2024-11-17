@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { CropperStatus } from "../types";
+import { makeCoordinates } from "../utils";
 import useCropperChunks from "./useCropperChunks";
 import { State } from "./useVideoPlayer";
 
@@ -13,17 +14,17 @@ export default function useCropper({
   coordinates,
 }: CropperHookProps) {
   const { playbackRate, volume } = videoPlayerState;
-  const { onAddChunkToCropperGenerator, discardChunks, cropperChunks } =
-    useCropperChunks({
-      playbackRate,
-      volume,
-      coordinates,
-    });
   const [status, setStatus] = useState(CropperStatus.IDLE);
 
   const onSetStatus = (status: CropperStatus) => {
     setStatus(status);
   };
+  const { onAddChunkToCropperGenerator, discardChunks, cropperChunks } =
+    useCropperChunks({
+      playbackRate,
+      volume,
+      coordinates: makeCoordinates(status, coordinates),
+    });
 
   return {
     status,

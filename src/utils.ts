@@ -1,5 +1,5 @@
 import { dimensionVideoPlayer } from "./constants";
-import { CropperChunk } from "./types";
+import { CropperChunk, CropperStatus } from "./types";
 
 export const getCropperWidth = (ratio: string) => {
   const [height, width] = ratio.split(":");
@@ -59,4 +59,13 @@ export function findNearestConfiguration(
     return leftConfig;
   }
   return rightConfig;
+}
+
+export function makeCoordinates(
+  status: CropperStatus,
+  coordinates: number[]
+): number[] {
+  return status === CropperStatus.CROPPING
+    ? coordinates
+    : [0, dimensionVideoPlayer.width];
 }
