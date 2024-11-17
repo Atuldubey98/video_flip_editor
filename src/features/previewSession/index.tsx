@@ -1,5 +1,7 @@
 import useCropperChunks from "../../hooks/useCropperChunks";
 import useSessionPlayer from "../../hooks/useSessionPlayer";
+import { ActionType } from "../../hooks/useVideoPlayer";
+import { VideoPlayerStatus } from "../../types";
 import JsonFetcher from "./JsonFetcher";
 import "./PreviewSession.css";
 import SessionFooterButtons from "./SessionFooterButtons";
@@ -18,10 +20,21 @@ export default function PreviewSession() {
     buttonVideoPlayerStatus,
     onStartOver,
     onToggleVideoPlayerStatus,
+    onSetDefaultConfig,
     video,
     ...sessionPlayerProps
   } = useSessionPlayer({ cropperChunks });
 
+  const onCancelSession = () => {
+    discardChunks();
+    if (!video) return;
+    video.fastSeek(0);
+    sessionPlayerProps.videoPlayer.dispatch({
+      type: ActionType.CHANGE_STATUS,
+      value: VideoPlayerStatus.PAUSED,
+    });
+    onSetDefaultConfig();
+  };
   return (
     <>
       <main>
@@ -37,11 +50,7 @@ export default function PreviewSession() {
           <SessionFooterButtons
             onToggleVideoPlayerStatus={onToggleVideoPlayerStatus}
             onStartOver={onStartOver}
-            onCancelSession={() => {
-              discardChunks();
-              if (!video) return;
-              video.fastSeek(0);
-            }}
+            onCancelSession={onCancelSession}
             buttonVideoPlayerStatus={buttonVideoPlayerStatus}
           />
         ) : null}

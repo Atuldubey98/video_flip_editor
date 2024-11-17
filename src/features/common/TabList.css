@@ -5,13 +5,14 @@
   gap: 16px;
   background-color: #45474e;
   padding: 5px;
+  font-size: 12px;
   border-radius: 0.8rem;
 }
 
 .tab__selected {
   background-color: #37393f;
-  padding-block: 8px;
-  padding-inline: 10px;
+  padding-block: 5px;
+  padding-inline: 8px;
   border-radius: 0.8rem;
 }
 

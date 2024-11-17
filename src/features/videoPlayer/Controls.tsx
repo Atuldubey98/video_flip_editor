@@ -16,6 +16,7 @@ export default function Controls({
   return (
     <div className="controls">
       <ControlSelect
+        label="Playback speed"
         name="playbackRate"
         onChange={(e) => {
           videoPlayerOperations({
@@ -27,6 +28,7 @@ export default function Controls({
         value={videoPlayerState.playbackRate}
       />
       <ControlSelect
+        label="Aspect ratio"
         name="aspectRatio"
         onChange={(e) => {
           videoPlayerOperations({

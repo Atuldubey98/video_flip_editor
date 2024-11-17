@@ -58,9 +58,11 @@ export default function useSessionPlayer({
   const buttonVideoPlayerStatus = buttonVideoPlayerStateLabels.get(
     videoPlayer.state.status
   );
+  const onSetDefaultConfig = () => setConfig(defaultConfig);
   return {
     onReady,
     onProgress,
+    onSetDefaultConfig,
     buttonVideoPlayerStatus,
     onStartOver,
     onToggleVideoPlayerStatus,

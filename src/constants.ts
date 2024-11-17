@@ -1,18 +1,18 @@
 import { PreviewErrorStatus, VideoPlayerStatus } from "./types";
 
 export const playBackRateOptions = [
-  { value: 0.5, label: "Playback Speed 0.5x" },
-  { value: 1, label: "Playback Speed 1x" },
-  { value: 1.5, label: "Playback Speed 1.5x" },
-  { value: 2, label: "Playback Speed 2x" },
+  { value: 0.5, label: "0.5x" },
+  { value: 1, label: "1x" },
+  { value: 1.5, label: "1.5x" },
+  { value: 2, label: "2x" },
 ];
 export const aspectRatioOptions = [
-  { value: "9:16", label: "Aspect Ratio 9:16" },
-  { value: "9:18", label: "Aspect Ratio 9:18" },
-  { value: "4:3", label: "Aspect Ratio 4:3" },
-  { value: "3:4", label: "Aspect Ratio 3:4" },
-  { value: "1:1", label: "Aspect Ratio 1:1" },
-  { value: "4:5", label: "Aspect Ratio 4:5" },
+  { value: "9:16", label: "9:16" },
+  { value: "9:18", label: "9:18" },
+  { value: "4:3", label: "4:3" },
+  { value: "3:4", label: "3:4" },
+  { value: "1:1", label: "1:1" },
+  { value: "4:5", label: "4:5" },
 ];
 export const dimensionVideoPlayer = {
   width: 650,
