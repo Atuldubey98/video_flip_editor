@@ -20,19 +20,15 @@ export default function useCropper({
     setStatus(status);
   };
   const onAddChunkToCropperGenerator = (playerProgress: OnProgressProps) =>
-    setCropperChunks(
-      status === CropperStatus.CROPPING
-        ? [
-            ...cropperChunks,
-            {
-              timeStamp: playerProgress.playedSeconds,
-              playbackRate,
-              volume,
-              coordinates,
-            },
-          ]
-        : cropperChunks
-    );
+    setCropperChunks([
+      ...cropperChunks,
+      {
+        timeStamp: playerProgress.playedSeconds,
+        playbackRate,
+        volume,
+        coordinates,
+      },
+    ]);
   const discardChunks = () => setCropperChunks([]);
   return {
     status,
