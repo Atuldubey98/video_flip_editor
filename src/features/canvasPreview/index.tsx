@@ -9,7 +9,6 @@ type CanvasPreviewProps = {
   previewStatus: PreviewErrorStatus;
 };
 export default function CanvasPreview(props: CanvasPreviewProps) {
-  
   return (
     <div className="canvas__preview">
       <h3 className="preview__heading">Preview</h3>

@@ -17,3 +17,8 @@ export enum PreviewErrorStatus {
   CROPPER_REMOVED = "cropper_removed",
   PREVIEWING = "previewing",
 }
+
+export enum VideoPlayerStatus {
+  PLAYING = "playing",
+  PAUSED = "paused",
+}

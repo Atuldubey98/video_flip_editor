@@ -1,11 +1,11 @@
 import ReactPlayer from "react-player";
 import { dimensionVideoPlayer } from "../../constants";
-import { Action, State } from "../../hooks/useVideoPlayer";
+import { Action, ActionType, State } from "../../hooks/useVideoPlayer";
 import Controls from "./Controls";
 import Cropper from "./Cropper";
 import "./VideoPlayer.css";
 import { OnProgressProps } from "react-player/base";
-import { CropperStatus } from "../../types";
+import { CropperStatus, VideoPlayerStatus } from "../../types";
 type VideoPlayerProps = {
   videoPlayer: {
     state: State;
@@ -17,9 +17,9 @@ type VideoPlayerProps = {
   };
   cropperStatus: CropperStatus;
   onReadyVideoPlayer: (video: HTMLVideoElement) => void;
-  onPlayVideoPlayerPaint: () => void;
   onEndAnimationFrame: () => void;
   clearCanvas: () => void;
+  discardChunks: () => void;
   onAddChunkToCropperGenerator: (videoPlayerProgress: OnProgressProps) => void;
 };
 
@@ -28,8 +28,8 @@ export default function VideoPlayer({
   cropperPosition,
   cropperStatus,
   onReadyVideoPlayer,
-  onPlayVideoPlayerPaint,
   onEndAnimationFrame,
+  discardChunks,
   onAddChunkToCropperGenerator,
   clearCanvas,
 }: VideoPlayerProps) {
@@ -40,7 +40,10 @@ export default function VideoPlayer({
 
   const onPlay = () => {
     clearCanvas();
-    onPlayVideoPlayerPaint();
+    videoPlayer.dispatch({
+      type: ActionType.CHANGE_STATUS,
+      value: VideoPlayerStatus.PLAYING,
+    });
   };
   return (
     <div className="video__player">
@@ -63,6 +66,13 @@ export default function VideoPlayer({
           volume={videoPlayerState.volume}
           playbackRate={videoPlayerState.playbackRate}
           onPlay={onPlay}
+          onPause={() => {
+            videoPlayer.dispatch({
+              type: ActionType.CHANGE_STATUS,
+              value: VideoPlayerStatus.PAUSED,
+            });
+          }}
+          onStart={discardChunks}
           onEnded={onEndAnimationFrame}
           onProgress={onAddChunkToCropperGenerator}
         />

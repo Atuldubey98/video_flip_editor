@@ -1,22 +1,27 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CropperStatus, PreviewErrorStatus } from "../types";
 import { getCanvasDrawParams } from "../utils";
 import useVideoPlayerPropertiesChange from "./useVideoPlayerPropertiesChange";
-import { Action } from "./useVideoPlayer";
+import { Action, State } from "./useVideoPlayer";
 
 interface CroppedPreviewProps {
   cropperWidth: number;
   cropX: number;
   cropperStatus: CropperStatus;
-  videoPlayerDispatch: React.Dispatch<Action>;
+  videoPlayer: {
+    state: State;
+    dispatch: React.Dispatch<Action>;
+  };
 }
 
 export default function useCroppedPreview({
   cropperWidth,
   cropX,
   cropperStatus,
-  videoPlayerDispatch,
+  videoPlayer,
 }: CroppedPreviewProps) {
+  const { state: videoPlayerState, dispatch: videoPlayerDispatch } =
+    videoPlayer;
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const context = useRef<CanvasRenderingContext2D | null>(null);
   const [video, setVideo] = useState<HTMLVideoElement | null>(null);
@@ -28,48 +33,61 @@ export default function useCroppedPreview({
     setVideo(video);
   };
   const animationFrame = useRef<number | null>(null);
+  useEffect(() => {
+    const onPlayVideoPlayerPaint = () => {
+      if (!canvasRef.current) {
+        setPreviewStatus(PreviewErrorStatus.CANVAS_ERROR);
+        return;
+      }
+      if (!video) {
+        setPreviewStatus(PreviewErrorStatus.VIDEO_ERROR);
+        return;
+      }
+      if ([CropperStatus.IDLE, CropperStatus.REMOVED].includes(cropperStatus)) {
+        onEndAnimationFrame();
+        setPreviewStatus(PreviewErrorStatus.CROPPER_REMOVED);
+        return;
+      }
+      if (!context.current)
+        context.current = canvasRef.current.getContext("2d");
+      clearCanvas();
+      setPreviewStatus(PreviewErrorStatus.PREVIEWING);
+      const canvas = canvasRef.current;
+      const { sx, sy, sWidth, sHeight, dWidth, dHeight } = getCanvasDrawParams(
+        video,
+        canvas,
+        cropX,
+        cropperWidth
+      );
+      context.current?.drawImage(
+        video,
+        sx,
+        sy,
+        sWidth,
+        sHeight,
+        0,
+        0,
+        dWidth,
+        dHeight
+      );
+      animationFrame.current = requestAnimationFrame(onPlayVideoPlayerPaint);
+    };
 
-  const onPlayVideoPlayerPaint = () => {
-    if (!canvasRef.current) {
-      setPreviewStatus(PreviewErrorStatus.CANVAS_ERROR);
-      return;
-    }
-    if (!video) {
-      setPreviewStatus(PreviewErrorStatus.VIDEO_ERROR);
-      return;
-    }
-    if ([CropperStatus.IDLE, CropperStatus.REMOVED].includes(cropperStatus)) {
-      setPreviewStatus(PreviewErrorStatus.CROPPER_REMOVED);
-      return;
-    }
-    onEndAnimationFrame();
-    if (!context.current) context.current = canvasRef.current.getContext("2d");
-    clearCanvas();
-    setPreviewStatus(PreviewErrorStatus.PREVIEWING);
-    const canvas = canvasRef.current;
-    const { sx, sy, sWidth, sHeight, dWidth, dHeight } = getCanvasDrawParams(
-      video,
-      canvas,
-      cropX,
-      cropperWidth
-    );
-    context.current?.drawImage(
-      video,
-      sx,
-      sy,
-      sWidth,
-      sHeight,
-      0,
-      0,
-      dWidth,
-      dHeight
-    );
-
-    animationFrame.current = requestAnimationFrame(onPlayVideoPlayerPaint);
-  };
-
-  const onEndAnimationFrame = () =>
+    onPlayVideoPlayerPaint();
+    return () => {
+      onEndAnimationFrame();
+    };
+  }, [
+    video,
+    canvasRef,
+    videoPlayerState.status,
+    cropX,
+    cropperWidth,
+    cropperStatus,
+  ]);
+  const onEndAnimationFrame = () => {
     animationFrame.current && cancelAnimationFrame(animationFrame.current);
+  };
 
   const clearCanvas = () => {
     if (!canvasRef.current || !context.current) return;
@@ -82,7 +100,6 @@ export default function useCroppedPreview({
   };
 
   return {
-    onPlayVideoPlayerPaint,
     onReadyVideoPlayer,
     canvasRef,
     clearCanvas,

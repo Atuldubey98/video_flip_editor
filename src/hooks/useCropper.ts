@@ -19,17 +19,20 @@ export default function useCropper({
   const onSetStatus = (status: CropperStatus) => {
     setStatus(status);
   };
-  const onAddChunkToCropperGenerator = (playerProgress: OnProgressProps) => {
-    setCropperChunks([
-      ...cropperChunks,
-      {
-        timeStamp: playerProgress.playedSeconds,
-        playbackRate,
-        volume,
-        coordinates,
-      },
-    ]);
-  };
+  const onAddChunkToCropperGenerator = (playerProgress: OnProgressProps) =>
+    setCropperChunks(
+      status === CropperStatus.CROPPING
+        ? [
+            ...cropperChunks,
+            {
+              timeStamp: playerProgress.playedSeconds,
+              playbackRate,
+              volume,
+              coordinates,
+            },
+          ]
+        : cropperChunks
+    );
   const discardChunks = () => setCropperChunks([]);
   return {
     status,

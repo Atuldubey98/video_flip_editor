@@ -25,13 +25,14 @@ export default function App() {
       cropperWidth,
       cropX: cropperPosition.cropX,
       cropperStatus: cropper.status,
-      videoPlayerDispatch: videoPlayer.dispatch,
+      videoPlayer,
     });
   const playerProps = {
     cropperStatus: cropper.status,
     videoPlayer,
     onAddChunkToCropperGenerator,
     cropperPosition,
+    discardChunks: cropper.discardChunks,
     ...videoPlayerControls,
   };
   const canvasProps = {

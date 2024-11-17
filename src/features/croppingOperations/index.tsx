@@ -30,7 +30,9 @@ export default function CroppingOperations({
         Remove Cropper
       </Button>
       <Button
-        disabled={cropper.status === CropperStatus.IDLE}
+        disabled={
+          cropper.status === CropperStatus.IDLE || !cropper.cropperChunks.length
+        }
         onClick={() => {
           cropper.onSetStatus(CropperStatus.IDLE);
           const blob = new Blob([JSON.stringify(cropper.cropperChunks)], {
@@ -42,6 +44,7 @@ export default function CroppingOperations({
           a.download = `${new Date().toUTCString()}.json`;
           a.click();
           URL.revokeObjectURL(url);
+          cropper.discardChunks();
         }}
       >
         Generate Cropper
