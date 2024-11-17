@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { PreviewErrorStatus, VideoPlayerStatus } from "./types";
 
 export const playBackRateOptions = [
