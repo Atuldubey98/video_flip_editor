@@ -1,3 +1,5 @@
+import { Action, State } from "./hooks/useVideoPlayer";
+
 export enum CropperStatus {
   IDLE = "idle",
   CROPPING = "cropping",
@@ -22,3 +24,8 @@ export enum VideoPlayerStatus {
   PLAYING = "playing",
   PAUSED = "paused",
 }
+
+export type VideoPlayerControl = {
+  state: State;
+  dispatch: React.Dispatch<Action>;
+};

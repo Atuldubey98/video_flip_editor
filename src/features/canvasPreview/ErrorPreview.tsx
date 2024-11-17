@@ -1,11 +1,11 @@
 import { croperErrortStatusMessages } from "../../constants";
 import { PreviewErrorStatus } from "../../types";
 import "./ErrorPreview.css";
-export default function ErrorPreview({
-  statusError,
-}: {
+type ErrorPreviewProps = {
   statusError: PreviewErrorStatus;
-}) {
+};
+
+export default function ErrorPreview({ statusError }: ErrorPreviewProps) {
   const messageSplits = (
     croperErrortStatusMessages.get(statusError) || ""
   )?.split("\n");

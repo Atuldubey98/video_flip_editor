@@ -1,16 +1,20 @@
 import { CropperChunk, CropperStatus } from "../../types";
 import Button from "../common/Button";
 import "./CroppingOperations.css";
+type Cropper = {
+  status: CropperStatus;
+  onSetStatus: (status: CropperStatus) => void;
+  discardChunks: () => void;
+  cropperChunks: CropperChunk[];
+};
+
+type CropperOperationsProps = {
+  cropper: Cropper;
+};
+
 export default function CroppingOperations({
   cropper,
-}: {
-  cropper: {
-    status: CropperStatus;
-    onSetStatus: (status: CropperStatus) => void;
-    discardChunks: () => void;
-    cropperChunks: CropperChunk[];
-  };
-}) {
+}: CropperOperationsProps) {
   return (
     <div className="cropper__btnGroup">
       <Button

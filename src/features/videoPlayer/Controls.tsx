@@ -1,16 +1,13 @@
-import React from "react";
-import { playBackRateOptions, aspectRatioOptions } from "../../constants";
-import { Action, ActionType, State } from "../../hooks/useVideoPlayer";
+import { aspectRatioOptions, playBackRateOptions } from "../../constants";
+import { ActionType } from "../../hooks/useVideoPlayer";
+import { VideoPlayerControl } from "../../types";
 import ControlSelect from "../common/ControlSelect";
-import './Controls.css';
+import "./Controls.css";
 export default function Controls({
   videoPlayer,
   handleCropDrag,
 }: {
-  videoPlayer: {
-    state: State;
-    dispatch: React.Dispatch<Action>;
-  };
+  videoPlayer: VideoPlayerControl;
   handleCropDrag: (x: number) => void;
 }) {
   const { dispatch: videoPlayerOperations, state: videoPlayerState } =

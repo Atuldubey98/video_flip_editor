@@ -1,13 +1,15 @@
 import "./TabList.css";
+type TabListProps = {
+  onSetTab: (index: number) => void;
+  tabIndex: number;
+  tabLabels: string[];
+};
+
 export default function TabList({
   onSetTab,
   tabIndex,
   tabLabels,
-}: {
-  onSetTab: (index: number) => void;
-  tabIndex: number;
-  tabLabels: string[];
-}) {
+}: TabListProps) {
   return (
     <div className="tab__list">
       {tabLabels.map((item, index) => (

@@ -9,7 +9,7 @@ export default function App() {
   const [tab, setTab] = useState(0);
   const tabs = [
     {
-      labels: "Preview Session",
+      label: "Preview Session",
       children: <PreviewSession />,
     },
     {
@@ -26,7 +26,7 @@ export default function App() {
       </header>
 
       <TabList
-        tabLabels={["Preview Session", "Generate Session"]}
+        tabLabels={tabs.map((tab) => tab.label)}
         tabIndex={tab}
         onSetTab={(index: number) => setTab(index)}
       />

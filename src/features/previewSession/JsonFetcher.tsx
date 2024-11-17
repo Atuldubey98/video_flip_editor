@@ -9,12 +9,15 @@ export default function JsonFetcher(props: {
 }) {
   return (
     <div className="json__fetcher">
-      {props.length ? null : <JsonUploader onSetChunks={props.onSetChunks} />}
       {props.length ? (
-        <div className="json">
-          <JsonDisplay str={props.chunksStr} />
+        <div className="json__maker">
+          <div className="json">
+            <JsonDisplay str={props.chunksStr} />
+          </div>
         </div>
-      ) : null}
+      ) : (
+        <JsonUploader onSetChunks={props.onSetChunks} />
+      )}
     </div>
   );
 }

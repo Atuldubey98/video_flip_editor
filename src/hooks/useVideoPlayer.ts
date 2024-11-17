@@ -45,11 +45,12 @@ export default function useVideoPlayer() {
         return state;
     }
   };
-  const [state, dispatch] = useReducer(reducer, {
+  const initialState = {
     playbackRate: 1,
     aspectRatio: "9:16",
     volume: 1,
     status: VideoPlayerStatus.PAUSED,
-  });
+  };
+  const [state, dispatch] = useReducer(reducer, initialState);
   return { state, dispatch };
 }

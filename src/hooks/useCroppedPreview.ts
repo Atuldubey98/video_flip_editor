@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import { CropperStatus, PreviewErrorStatus } from "../types";
+import {
+  CropperStatus,
+  PreviewErrorStatus,
+  VideoPlayerControl,
+} from "../types";
 import { getCanvasDrawParams } from "../utils";
 import useVideoPlayerPropertiesChange from "./useVideoPlayerPropertiesChange";
-import { Action, State } from "./useVideoPlayer";
 
 interface CroppedPreviewProps {
   cropperWidth: number;
   cropX: number;
   cropperStatus: CropperStatus;
-  videoPlayer: {
-    state: State;
-    dispatch: React.Dispatch<Action>;
-  };
+  videoPlayer: VideoPlayerControl;
 }
 
 export default function useCroppedPreview({
@@ -29,9 +29,8 @@ export default function useCroppedPreview({
   const [previewStatus, setPreviewStatus] = useState(
     PreviewErrorStatus.CROPPER_REMOVED
   );
-  const onReadyVideoPlayer = (video: HTMLVideoElement) => {
-    setVideo(video);
-  };
+  const onReadyVideoPlayer = (video: HTMLVideoElement) => setVideo(video);
+  
   const animationFrame = useRef<number | null>(null);
   useEffect(() => {
     const onPlayVideoPlayerPaint = () => {

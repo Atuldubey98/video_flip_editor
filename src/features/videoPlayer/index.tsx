@@ -1,20 +1,23 @@
 import ReactPlayer from "react-player";
+import { OnProgressProps } from "react-player/base";
 import { dimensionVideoPlayer } from "../../constants";
-import { Action, ActionType, State } from "../../hooks/useVideoPlayer";
+import { ActionType } from "../../hooks/useVideoPlayer";
+import {
+  CropperStatus,
+  VideoPlayerControl,
+  VideoPlayerStatus,
+} from "../../types";
 import Controls from "./Controls";
 import Cropper from "./Cropper";
 import "./VideoPlayer.css";
-import { OnProgressProps } from "react-player/base";
-import { CropperStatus, VideoPlayerStatus } from "../../types";
+type CropperPosition = {
+  handleCropDrag: (newCropX: number) => void;
+  cropX: number;
+};
+
 type VideoPlayerProps = {
-  videoPlayer: {
-    state: State;
-    dispatch: React.Dispatch<Action>;
-  };
-  cropperPosition: {
-    handleCropDrag: (newCropX: number) => void;
-    cropX: number;
-  };
+  videoPlayer: VideoPlayerControl;
+  cropperPosition: CropperPosition;
   cropperStatus: CropperStatus;
   onReadyVideoPlayer: (video: HTMLVideoElement) => void;
   onEndAnimationFrame: () => void;
