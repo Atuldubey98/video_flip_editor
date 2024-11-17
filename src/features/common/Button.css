@@ -7,6 +7,10 @@
   font-weight: bold;
   font-family: "DM Sans", sans-serif;
   color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
   cursor: pointer;
   font-size: 14px;
 }

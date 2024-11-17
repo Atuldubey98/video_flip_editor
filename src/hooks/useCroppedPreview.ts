@@ -105,5 +105,6 @@ export default function useCroppedPreview({
     clearCanvas,
     onEndAnimationFrame,
     previewStatus,
+    video,
   };
 }

@@ -1,4 +1,5 @@
-import { PreviewErrorStatus } from "./types";
+import { ReactNode } from "react";
+import { PreviewErrorStatus, VideoPlayerStatus } from "./types";
 
 export const playBackRateOptions = [
   { value: 0.5, label: "Playback Speed 0.5x" },
@@ -30,3 +31,10 @@ export const croperErrortStatusMessages: Map<PreviewErrorStatus, string> =
     [PreviewErrorStatus.PREVIEWING, ""],
   ]);
 
+export const buttonVideoPlayerStateLabels: Map<
+  VideoPlayerStatus,
+  { label: string; iconSrc: string }
+> = new Map([
+  [VideoPlayerStatus.PAUSED, { label: "Play", iconSrc: "/playIcon.svg" }],
+  [VideoPlayerStatus.PLAYING, { label: "Pause", iconSrc: "/pause.svg" }],
+]);

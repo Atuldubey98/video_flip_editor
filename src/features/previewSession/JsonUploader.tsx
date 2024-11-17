@@ -1,14 +1,13 @@
-import { ChangeEventHandler } from "react";
+import { FileUploader } from "react-drag-drop-files";
 import "./JsonUploader.css";
 export default function JsonUploader<T>({
   onSetChunks,
 }: {
   onSetChunks: (chunks: T[]) => void;
 }) {
-  const onLoadJson: ChangeEventHandler<HTMLInputElement> = async (e) => {
-    const files = e.currentTarget.files;
-    if (!files?.length) return;
-    const fileUrl = URL.createObjectURL(files[0]);
+  const onLoadJson = async (file: Blob) => {
+    if (!file) return;
+    const fileUrl = URL.createObjectURL(file);
     const response = await fetch(fileUrl);
     if (!response.ok) throw new Error();
     const chunks = (await response.json()) as T[];
@@ -16,7 +15,12 @@ export default function JsonUploader<T>({
   };
   return (
     <div className="json__uploader">
-      <input type="file" accept="application/json" onChange={onLoadJson} />
+      <FileUploader types={["JSON"]} handleChange={onLoadJson}>
+        <div className="uploader">
+          <img src="/json-file.svg" width={50} />
+          <h3>Click or drag a json file here to upload</h3>
+        </div>
+      </FileUploader>
     </div>
   );
 }

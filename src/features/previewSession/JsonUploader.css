@@ -1,3 +1,13 @@
 .json__uploader {
   padding: 1rem;
 }
+.uploader {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  cursor: pointer;
+  gap: 1rem;
+  border: 2px dashed rgb(69, 71, 78);
+  padding: 2rem;
+  border-radius: 0.8rem;
+}

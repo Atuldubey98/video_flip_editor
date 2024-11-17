@@ -1,16 +1,22 @@
 import { useState } from "react";
 import ReactPlayer from "react-player";
+import { OnProgressProps } from "react-player/base";
+import {
+  buttonVideoPlayerStateLabels,
+  dimensionVideoPlayer,
+} from "../../constants";
 import { useCroppedPreview, useVideoPlayer } from "../../hooks";
 import useCropperChunks from "../../hooks/useCropperChunks";
 import { ActionType } from "../../hooks/useVideoPlayer";
 import { CropperChunk, CropperStatus, VideoPlayerStatus } from "../../types";
+import { findNearestConfiguration } from "../../utils";
 import Preview from "../canvasPreview/Preview";
-import Button from "../common/Button";
 import JsonFetcher from "./JsonFetcher";
 import "./PreviewSession.css";
+import SessionFooterButtons from "./SessionFooterButtons";
 
 export default function PreviewSession() {
-  const { onSetChunks, cropperChunks } = useCropperChunks({});
+  const { onSetChunks, cropperChunks, discardChunks } = useCropperChunks({});
   const TOTAL_CHUNKS_TO_SHOW = 100;
   const left = cropperChunks.length - TOTAL_CHUNKS_TO_SHOW;
   const chunksStr = `${JSON.stringify(
@@ -20,45 +26,10 @@ export default function PreviewSession() {
   )}${left > 0 ? `...${left} more chunks` : ""}`;
   const videoPlayer = useVideoPlayer();
   const { state, dispatch } = videoPlayer;
-  function findNearestConfiguration(
-    playedSeconds: number
-  ): CropperChunk | null {
-    let left = 0;
-    let right = cropperChunks.length - 1;
 
-    if (cropperChunks.length === 0) return null;
-
-    while (left <= right) {
-      const mid = Math.floor((left + right) / 2);
-      const midTimeStamp = cropperChunks[mid].timeStamp;
-
-      if (midTimeStamp === playedSeconds) {
-        return cropperChunks[mid];
-      } else if (midTimeStamp < playedSeconds) {
-        left = mid + 1;
-      } else {
-        right = mid - 1;
-      }
-    }
-
-    const leftConfig = cropperChunks[left]
-      ? cropperChunks[left]
-      : defaultConfig;
-    const rightConfig = cropperChunks[right]
-      ? cropperChunks[right]
-      : defaultConfig;
-
-    if (
-      Math.abs(leftConfig.timeStamp - playedSeconds) <
-      Math.abs(rightConfig.timeStamp - playedSeconds)
-    ) {
-      return leftConfig;
-    }
-    return rightConfig;
-  }
   const defaultConfig = {
     timeStamp: 0,
-    coordinates: [0, 0],
+    coordinates: [0, dimensionVideoPlayer.width],
     playbackRate: 1,
     volume: 1,
   };
@@ -66,12 +37,37 @@ export default function PreviewSession() {
   const [cropX, cropperWidth] = config.coordinates;
   const onReady = (player: ReactPlayer): void =>
     onReadyVideoPlayer(player.getInternalPlayer() as HTMLVideoElement);
-  const { canvasRef, onReadyVideoPlayer, previewStatus } = useCroppedPreview({
-    cropperStatus: CropperStatus.CROPPING,
-    cropperWidth: cropperWidth,
-    cropX,
-    videoPlayer,
-  });
+  const { canvasRef, onReadyVideoPlayer, previewStatus, video } =
+    useCroppedPreview({
+      cropperStatus: CropperStatus.CROPPING,
+      cropperWidth: cropperWidth,
+      cropX,
+      videoPlayer,
+    });
+
+  const onToggleVideoPlayerStatus = () =>
+    dispatch({
+      type: ActionType.CHANGE_STATUS,
+      value:
+        state.status === VideoPlayerStatus.PLAYING
+          ? VideoPlayerStatus.PAUSED
+          : VideoPlayerStatus.PLAYING,
+    });
+  const onProgress = ({ playedSeconds }: OnProgressProps) => {
+    const config = findNearestConfiguration(
+      playedSeconds,
+      cropperChunks,
+      defaultConfig
+    );
+    if (config) setConfig(config);
+  };
+  const onStartOver = () => {
+    if (!video) return;
+    video.fastSeek(0);
+  };
+  const buttonVideoPlayerStatus = buttonVideoPlayerStateLabels.get(
+    videoPlayer.state.status
+  );
   return (
     <>
       <main>
@@ -80,7 +76,7 @@ export default function PreviewSession() {
           length={cropperChunks.length}
           chunksStr={chunksStr}
         />
-        <div>
+        <div className="player">
           <ReactPlayer
             playing={state.status === VideoPlayerStatus.PLAYING}
             onPlay={() =>
@@ -103,31 +99,23 @@ export default function PreviewSession() {
             }}
             url={"/video.mp4"}
             controls
-            onProgress={({ playedSeconds }) => {
-              const config = findNearestConfiguration(playedSeconds);
-              if (config) setConfig(config);
-            }}
+            onProgress={onProgress}
           />
           <Preview canvasRef={canvasRef} previewStatus={previewStatus} />
         </div>
       </main>
       <footer>
         {cropperChunks.length ? (
-          <div className="video__operations">
-            <Button
-              onClick={() =>
-                dispatch({
-                  type: ActionType.CHANGE_STATUS,
-                  value:
-                    state.status === VideoPlayerStatus.PLAYING
-                      ? VideoPlayerStatus.PAUSED
-                      : VideoPlayerStatus.PLAYING,
-                })
-              }
-            >
-              {state.status === VideoPlayerStatus.PLAYING ? "Pause" : "Play"}
-            </Button>
-          </div>
+          <SessionFooterButtons
+            onToggleVideoPlayerStatus={onToggleVideoPlayerStatus}
+            onStartOver={onStartOver}
+            onCancelSession={() => {
+              discardChunks();
+              if (!video) return;
+              video.fastSeek(0);
+            }}
+            buttonVideoPlayerStatus={buttonVideoPlayerStatus}
+          />
         ) : null}
       </footer>
     </>
