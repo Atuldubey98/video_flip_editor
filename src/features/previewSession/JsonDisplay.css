@@ -1,0 +1,7 @@
+.json__display {
+  padding: 1rem;
+  background-color: #45474e;
+  border-radius: 10px;
+  max-height: 65svh;
+  overflow-y: auto;
+}

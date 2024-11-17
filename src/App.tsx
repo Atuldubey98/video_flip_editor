@@ -1,44 +1,22 @@
+import { useState } from "react";
 import "./App.css";
+import TabList from "./features/common/TabList";
 
-import CroppingOperations from "./features/croppingOperations";
-import CanvasPreview from "./features/canvasPreview";
-import VideoPlayer from "./features/videoPlayer";
-import {
-  useCroppedPreview,
-  useCropper,
-  useCropperPosition,
-  useVideoPlayer,
-} from "./hooks";
-import { getCropperWidth } from "./utils";
+import GenerateSession from "./features/generateSession";
+import PreviewSession from "./features/previewSession";
 
 export default function App() {
-  const videoPlayer = useVideoPlayer();
-  const cropperWidth = getCropperWidth(videoPlayer.state.aspectRatio);
-  const cropperPosition = useCropperPosition({ cropperWidth });
-
-  const { onAddChunkToCropperGenerator, ...cropper } = useCropper({
-    videoPlayerState: videoPlayer.state,
-    coordinates: [cropperPosition.cropX, cropperWidth],
-  });
-  const { canvasRef, previewStatus, ...videoPlayerControls } =
-    useCroppedPreview({
-      cropperWidth,
-      cropX: cropperPosition.cropX,
-      cropperStatus: cropper.status,
-      videoPlayer,
-    });
-  const playerProps = {
-    cropperStatus: cropper.status,
-    videoPlayer,
-    onAddChunkToCropperGenerator,
-    cropperPosition,
-    discardChunks: cropper.discardChunks,
-    ...videoPlayerControls,
-  };
-  const canvasProps = {
-    canvasRef,
-    previewStatus,
-  };
+  const [tab, setTab] = useState(0);
+  const tabs = [
+    {
+      labels: "Preview Session",
+      children: <PreviewSession />,
+    },
+    {
+      label: "Generate Session",
+      children: <GenerateSession />,
+    },
+  ];
   return (
     <>
       <header>
@@ -46,17 +24,13 @@ export default function App() {
           <h1>Cropper</h1>
         </div>
       </header>
-      <main>
-        <div className="video__playerWrapper">
-          <VideoPlayer {...playerProps} />
-        </div>
-        <div>
-          <CanvasPreview {...canvasProps} />
-        </div>
-      </main>
-      <footer>
-        <CroppingOperations cropper={cropper} />
-      </footer>
+
+      <TabList
+        tabLabels={["Preview Session", "Generate Session"]}
+        tabIndex={tab}
+        onSetTab={(index: number) => setTab(index)}
+      />
+      {tabs[tab].children}
     </>
   );
 }

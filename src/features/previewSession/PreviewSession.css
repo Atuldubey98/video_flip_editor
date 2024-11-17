@@ -1,0 +1,10 @@
+.json__fetcher {
+  padding: 1rem;
+}
+.video__operations {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
