@@ -30,10 +30,10 @@ export default function useCroppedPreview({
     PreviewErrorStatus.CROPPER_REMOVED
   );
   const onReadyVideoPlayer = (video: HTMLVideoElement) => setVideo(video);
-  
+
   const animationFrame = useRef<number | null>(null);
   useEffect(() => {
-    const onPlayVideoPlayerPaint = () => {
+    const onPaintCanvasWithVideo = () => {
       if (!canvasRef.current) {
         setPreviewStatus(PreviewErrorStatus.CANVAS_ERROR);
         return;
@@ -69,10 +69,10 @@ export default function useCroppedPreview({
         dWidth,
         dHeight
       );
-      animationFrame.current = requestAnimationFrame(onPlayVideoPlayerPaint);
+      animationFrame.current = requestAnimationFrame(onPaintCanvasWithVideo);
     };
 
-    onPlayVideoPlayerPaint();
+    onPaintCanvasWithVideo();
     return () => {
       onEndAnimationFrame();
     };
